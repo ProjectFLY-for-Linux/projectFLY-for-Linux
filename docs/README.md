@@ -2,11 +2,11 @@
 home: true
 heroImage: /hero.png
 features:
-- title: Simplicity First
-  details: Minimal setup with markdown-centered project structure helps you focus on writing.
-- title: Vue-Powered
-  details: Enjoy the dev experience of Vue + webpack, use Vue components in markdown, and develop custom themes with Vue.
-- title: Performant
-  details: VuePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
-footer: MIT Licensed | Copyright © 2018-present Evan You
+- title: pfly_rust
+  details: A crate to interact with the projectFly X-Plane IPC service.
+- title: Open projectFLY X-Plane
+  details: An open source replacement for the projectFly X-Plane plugin.
+- title: projectFly for Linux
+  details: An unofficial patch to get the projectFLY client to work on Linux. 
+footer: projectFLY and related projects are owned by Mettar Simulations | projectFly for Linux was created as a fan project
 ---
