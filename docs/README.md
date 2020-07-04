@@ -1,6 +1,8 @@
 ---
 home: true
 heroImage: /hero.png
+actionText: Get Started →
+actionLink: /pflyforlinux.md
 features:
 - title: pfly_rust
   details: A crate to interact with the projectFLY X-Plane IPC service.
