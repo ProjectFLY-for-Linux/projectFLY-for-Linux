@@ -1,0 +1,205 @@
+--- /home/skye/Downloads/electron/resources/app_clean/main.bd893ebdb5811b32c3c4.js
++++ /home/skye/Downloads/electron/resources/app/main.bd893ebdb5811b32c3c4.js
+@@ -34434,7 +34434,13 @@
+         this.minimiseOnExit = this.storage.get('minimiseOnExit') ? this.storage.get('minimiseOnExit') : 'false';
+         this.autostart = this.storage.get('autostart', true);
+         this.exportAddons = Object.keys(this.exportService.exportTypes);
+-        var settingsFileRaw = fs.readFileSync(process.env.APPDATA + '/projectfly/settings.json');
++        var settingsUrl = '';
++	if (process.platform === 'linux') {
++	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++	} else {
++	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++	}
++        var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settingsFile = JSON.parse(settingsFileRaw);
+         this.enableHardwareAccel = settingsFile.hardwareAccel;
+         if (this.settingsService.emails) {
+@@ -34716,7 +34722,12 @@
+     };
+     ApplicationComponent.prototype.toggleHardwareAccel = function (event) {
+         var _this = this;
+-        var settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++        var settingsUrl = '';
++	if (process.platform === 'linux') {
++	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++	} else {
++	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++	}
+         var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settings = JSON.parse(settingsFileRaw);
+         settings.hardwareAccel = event;
+@@ -38010,7 +38021,7 @@
+         this.xplError = null;
+         var fs = this.electronService.fs;
+         var path = this.electronService.remote.app;
+-        var xpl = this.electronService.path.join(this.paths.xplane, 'resources', 'plugins');
++        var xpl = this.electronService.path.join(this.paths.xplane, 'Resources', 'plugins');
+         if (!fs.existsSync(this.paths.xplane)) {
+             this.xplError = 'The X-Plane directory set does not exist, or is inaccessible.';
+             return;
+@@ -38020,15 +38031,30 @@
+             return;
+         }
+         this.xplCopying = true;
+-        var subPath = '../exec/xpl/projectFLY';
++        var subPath = '';
++        if (process.platform === 'linux') {
++            subPath = '../exec/xpl/openPFly';
++        } else {
++            subPath = '../exec/xpl/projectFLY';
++        }
+         var isFocusBuild = this.electronService.isFocusBuild();
+         if (isFocusBuild)
+             subPath = '../exec/xpl/projectFLY Focus';
+         var installPath = this.electronService.path.join(path.getAppPath(), subPath);
+-        var destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        var destPath = '';
++        if (process.platform === 'linux') {
++            destPath = this.electronService.path.join(xpl, 'openPFly');
++        } else {
++            destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        }
+         var source = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])() ? './src/resources/' + subPath : installPath;
+         var fsE = this.electronService.fsExtra;
+-        var dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        var dir = '';
++        if (process.platform === 'linux') {
++            dir = xpl + '/openPFly'
++        } else {
++            dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        }
+         if (fs.existsSync(dir))
+             fsE.removeSync(dir);
+         fsE.copy(source, dir, function (err) {
+@@ -38048,10 +38074,11 @@
+         var fs = this.electronService.fs;
+         var isFocusBuild = this.electronService.isFocusBuild();
+         var version = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++            version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/openPFly/version.json');
++        } else if (isFocusBuild) {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY Focus/version.json');
+-        }
+-        else {
++        } else {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY/version.json');
+         }
+         if (!fs.existsSync(version)) {
+@@ -38061,7 +38088,11 @@
+         var data = fs.readFileSync(version, 'utf8');
+         var path = this.electronService.remote.app;
+         var localVersion = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
++                ? '../resources/exec/xpl/openPFly/version.json'
++                : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/openPFly/version.json');       
++        } else if (isFocusBuild) {
+             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
+                 ? '../resources/exec/xpl/projectFLY Focus/version.json'
+                 : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/projectFLY Focus/version.json');
+--- /home/skye/Downloads/electron/resources/app_clean/main.bd893ebdb5811b32c3c4.js
++++ /home/skye/Downloads/electron/resources/app/main.bd893ebdb5811b32c3c4.js
+@@ -34434,7 +34434,13 @@
+         this.minimiseOnExit = this.storage.get('minimiseOnExit') ? this.storage.get('minimiseOnExit') : 'false';
+         this.autostart = this.storage.get('autostart', true);
+         this.exportAddons = Object.keys(this.exportService.exportTypes);
+-        var settingsFileRaw = fs.readFileSync(process.env.APPDATA + '/projectfly/settings.json');
++        var settingsUrl = '';
++	if (process.platform === 'linux') {
++	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++	} else {
++	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++	}
++        var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settingsFile = JSON.parse(settingsFileRaw);
+         this.enableHardwareAccel = settingsFile.hardwareAccel;
+         if (this.settingsService.emails) {
+@@ -34716,7 +34722,12 @@
+     };
+     ApplicationComponent.prototype.toggleHardwareAccel = function (event) {
+         var _this = this;
+-        var settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++        var settingsUrl = '';
++	if (process.platform === 'linux') {
++	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++	} else {
++	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++	}
+         var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settings = JSON.parse(settingsFileRaw);
+         settings.hardwareAccel = event;
+@@ -38010,7 +38021,7 @@
+         this.xplError = null;
+         var fs = this.electronService.fs;
+         var path = this.electronService.remote.app;
+-        var xpl = this.electronService.path.join(this.paths.xplane, 'resources', 'plugins');
++        var xpl = this.electronService.path.join(this.paths.xplane, 'Resources', 'plugins');
+         if (!fs.existsSync(this.paths.xplane)) {
+             this.xplError = 'The X-Plane directory set does not exist, or is inaccessible.';
+             return;
+@@ -38020,15 +38031,30 @@
+             return;
+         }
+         this.xplCopying = true;
+-        var subPath = '../exec/xpl/projectFLY';
++        var subPath = '';
++        if (process.platform === 'linux') {
++            subPath = '../exec/xpl/openPFly';
++        } else {
++            subPath = '../exec/xpl/projectFLY';
++        }
+         var isFocusBuild = this.electronService.isFocusBuild();
+         if (isFocusBuild)
+             subPath = '../exec/xpl/projectFLY Focus';
+         var installPath = this.electronService.path.join(path.getAppPath(), subPath);
+-        var destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        var destPath = '';
++        if (process.platform === 'linux') {
++            destPath = this.electronService.path.join(xpl, 'openPFly');
++        } else {
++            destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        }
+         var source = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])() ? './src/resources/' + subPath : installPath;
+         var fsE = this.electronService.fsExtra;
+-        var dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        var dir = '';
++        if (process.platform === 'linux') {
++            dir = xpl + '/openPFly'
++        } else {
++            dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        }
+         if (fs.existsSync(dir))
+             fsE.removeSync(dir);
+         fsE.copy(source, dir, function (err) {
+@@ -38048,10 +38074,11 @@
+         var fs = this.electronService.fs;
+         var isFocusBuild = this.electronService.isFocusBuild();
+         var version = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++            version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/openPFly/version.json');
++        } else if (isFocusBuild) {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY Focus/version.json');
+-        }
+-        else {
++        } else {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY/version.json');
+         }
+         if (!fs.existsSync(version)) {
+@@ -38061,7 +38088,11 @@
+         var data = fs.readFileSync(version, 'utf8');
+         var path = this.electronService.remote.app;
+         var localVersion = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
++                ? '../resources/exec/xpl/openPFly/version.json'
++                : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/openPFly/version.json');       
++        } else if (isFocusBuild) {
+             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
+                 ? '../resources/exec/xpl/projectFLY Focus/version.json'
+                 : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/projectFLY Focus/version.json');
+
