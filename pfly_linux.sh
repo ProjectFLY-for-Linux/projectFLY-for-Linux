@@ -14,7 +14,7 @@ echo "----"
 
 echo "Downloading Open projecFLY X-Plane plugin"
 cd ./resources/exec/xpl
-wget https://gitlab.com/pretzelca/open-projectfly-x-plane/uploads/75c1855ccb46ad0ad5a80d3e80dd5621/openPFly.tar.xz
+wget https://gitlab.com/pretzelca/open-projectfly-x-plane/-/raw/master/openPFly.tar.xz
 echo "Extracting plugin"
 tar -xf openPFly.tar.xz
 cd ../../../
