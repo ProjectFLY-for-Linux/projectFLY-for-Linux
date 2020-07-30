@@ -1,5 +1,5 @@
 --- /home/skye/Downloads/electron/resources/app_clean/main.js
-+++ /home/skye/Downloads/electron/resources/app_work/main.js
++++ /home/skye/Downloads/electron/resources/app 4.0.1/main.js
 @@ -57,8 +57,8 @@
  var hardwareAccel;
  var args = process.argv.slice(1);
@@ -11,7 +11,36 @@
  electron_1.app.commandLine.appendSwitch('disable-features', 'HardwareMediaKeyHandling,MediaSessionService');
  function createLoadingWindow() {
      var _a = electron_1.screen.getPrimaryDisplay().workAreaSize, width = _a.width, height = _a.height;
-@@ -127,11 +127,11 @@
+@@ -68,7 +68,7 @@
+         title: 'projectFLY',
+         name: 'projectFLY',
+         backgroundColor: '#121212',
+-        devTools: false,
++        devTools: true,
+         movable: false,
+         icon: appIcon,
+         resizable: false,
+@@ -76,7 +76,7 @@
+         webPreferences: {
+             plugins: true,
+             nodeIntegration: true,
+-            spellcheck: false
++            spellcheck: true
+         }
+     };
+     if (os.platform() === 'darwin') {
+@@ -100,7 +100,9 @@
+             hash: '/loading'
+         }));
+     }
+-    checkForUpdates();
++    if (os.platform() != 'Linux') {
++      checkForUpdates();
++    }
+     loadingScreen.on('closed', function () { return (loadingScreen = null); });
+     electron_1.ipcMain.on('quit-and-install-update', function (event, arg) {
+         installUpdate();
+@@ -127,11 +129,11 @@
          name: 'projectFLY',
          icon: appIcon,
          backgroundColor: '#121212',
@@ -25,7 +54,17 @@
              enableRemoteModule: true
          }
      };
-@@ -257,7 +257,14 @@
+@@ -170,7 +172,9 @@
+     });
+     // Check for updates every 15 mins
+     setInterval(function () {
++      if (os.platform() != 'Linux') {
+         checkForUpdates();
++      }
+     }, 900000);
+     // win.webContents.openDevTools();
+     // Emitted when the window is closed.
+@@ -257,7 +261,15 @@
      sendUpdateNotification('updateDownloaded');
      sendUpdateNotification(info);
  });
@@ -38,12 +77,13 @@
 +} else {
 +    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
 +}
++
  try {
      if (fs.existsSync(settingsUrl)) {
          var settingsFileRaw = fs.readFileSync(settingsUrl);
---- /home/skye/Downloads/electron/resources/app_clean/main.bd893ebdb5811b32c3c4.js
-+++ /home/skye/Downloads/electron/resources/app_work/main.bd893ebdb5811b32c3c4.js
-@@ -34434,7 +34434,13 @@
+--- /home/skye/Downloads/electron/resources/app_clean/main.b90545f91a77b601957c.js
++++ /home/skye/Downloads/electron/resources/app 4.0.1/main.b90545f91a77b601957c.js
+@@ -34503,7 +34503,14 @@
          this.minimiseOnExit = this.storage.get('minimiseOnExit') ? this.storage.get('minimiseOnExit') : 'false';
          this.autostart = this.storage.get('autostart', true);
          this.exportAddons = Object.keys(this.exportService.exportTypes);
@@ -55,10 +95,11 @@
 +	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
 +	}
 +        var settingsFileRaw = fs.readFileSync(settingsUrl);
++
          var settingsFile = JSON.parse(settingsFileRaw);
          this.enableHardwareAccel = settingsFile.hardwareAccel;
          if (this.settingsService.emails) {
-@@ -34716,7 +34722,12 @@
+@@ -34785,7 +34792,13 @@
      };
      ApplicationComponent.prototype.toggleHardwareAccel = function (event) {
          var _this = this;
@@ -69,10 +110,20 @@
 +	} else {
 +	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
 +	}
++
          var settingsFileRaw = fs.readFileSync(settingsUrl);
          var settings = JSON.parse(settingsFileRaw);
          settings.hardwareAccel = event;
-@@ -38010,7 +38021,7 @@
+@@ -37929,7 +37942,7 @@
+         }
+         else {
+             this.bridgeOptions.push({
+-                label: '[X-Plane] projectFLY X-Plane Plugin',
++                label: '[X-Plane] openPFly X-Plane Plugin',
+                 value: 'xplane'
+             });
+         }
+@@ -38081,7 +38094,7 @@
          this.xplError = null;
          var fs = this.electronService.fs;
          var path = this.electronService.remote.app;
@@ -81,7 +132,7 @@
          if (!fs.existsSync(this.paths.xplane)) {
              this.xplError = 'The X-Plane directory set does not exist, or is inaccessible.';
              return;
-@@ -38020,15 +38031,30 @@
+@@ -38091,15 +38104,33 @@
              return;
          }
          this.xplCopying = true;
@@ -92,6 +143,7 @@
 +        } else {
 +            subPath = '../exec/xpl/projectFLY';
 +        }
++
          var isFocusBuild = this.electronService.isFocusBuild();
          if (isFocusBuild)
              subPath = '../exec/xpl/projectFLY Focus';
@@ -103,6 +155,7 @@
 +        } else {
 +            destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
 +        }
++        
          var source = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])() ? './src/resources/' + subPath : installPath;
          var fsE = this.electronService.fsExtra;
 -        var dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
@@ -112,10 +165,11 @@
 +        } else {
 +            dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
 +        }
++
          if (fs.existsSync(dir))
              fsE.removeSync(dir);
          fsE.copy(source, dir, function (err) {
-@@ -38048,10 +38074,11 @@
+@@ -38119,10 +38150,11 @@
          var fs = this.electronService.fs;
          var isFocusBuild = this.electronService.isFocusBuild();
          var version = null;
@@ -130,7 +184,7 @@
              version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY/version.json');
          }
          if (!fs.existsSync(version)) {
-@@ -38061,7 +38088,11 @@
+@@ -38132,7 +38164,12 @@
          var data = fs.readFileSync(version, 'utf8');
          var path = this.electronService.remote.app;
          var localVersion = null;
@@ -140,6 +194,26 @@
 +                ? '../resources/exec/xpl/openPFly/version.json'
 +                : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/openPFly/version.json');       
 +        } else if (isFocusBuild) {
++
              localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
                  ? '../resources/exec/xpl/projectFLY Focus/version.json'
                  : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/projectFLY Focus/version.json');
+@@ -75393,7 +75430,7 @@
+         this.ipc.config.silent = true;
+         var bridgeTypes = ['simconnect', 'fsuipc', 'if', 'xplane'];
+         // serve the ipc server
+-        this.ipc.serve(navigator.userAgent.includes('Windows NT') ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {
++        this.ipc.serve(navigator.userAgent.includes('Windows NT' || Unix) ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {
+             _this.ipc.server.on('error', function (err) {
+                 alert(err);
+             });
+@@ -75439,7 +75476,8 @@
+         }
+         else {
+             this.log('Platform is Unix');
+-            this.log('No bridge currently available.');
++            this.log('Using openPFly.');
++            this.startBridge();
+         }
+     };
+     FlightSimService.prototype.pad = function (number) {
