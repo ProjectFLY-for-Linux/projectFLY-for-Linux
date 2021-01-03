@@ -1,5 +1,290 @@
---- /home/skye/Downloads/electron/resources/app 4.0.2/main.js
-+++ /home/skye/Downloads/electron/resources/app/main.js
+--- ./main.d329bcaff6a7038720bb.js	2021-01-02 23:31:16.926330866 -0500
++++ ./main.d329bcaff6a7038720bb.js	2021-01-03 00:09:40.175190000 -0500
+@@ -34508,7 +34508,13 @@
+         this.autostart = this.storage.get('autostart', true);
+         this.enableTrayIcon = this.storage.get('enableTrayIcon', true);
+         this.exportAddons = Object.keys(this.exportService.exportTypes);
+-        var settingsFileRaw = fs.readFileSync(process.env.APPDATA + '/projectfly/settings.json');
++        var settingsUrl = '';
++        if (process.platform === 'linux') {
++            settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++        } else {
++            settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++        }
++        var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settingsFile = JSON.parse(settingsFileRaw);
+         this.enableHardwareAccel = settingsFile.hardwareAccel;
+         if (this.settingsService.emails) {
+@@ -34790,7 +34796,12 @@
+     };
+     ApplicationComponent.prototype.toggleHardwareAccel = function (event) {
+         var _this = this;
+-        var settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++        var settingsUrl = '';
++        if (process.platform === 'linux') {
++            settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
++        } else {
++            settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
++        }
+         var settingsFileRaw = fs.readFileSync(settingsUrl);
+         var settings = JSON.parse(settingsFileRaw);
+         settings.hardwareAccel = event;
+@@ -34841,11 +34852,11 @@
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "div", 9);
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "input", 10);
+-                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ApplicationComponent_Template_input_ngModelChange_13_listener($event) { return ctx.enableTrayIcon = $event; })("ngModelChange", function ApplicationComponent_Template_input_ngModelChange_13_listener($event) { return ctx.toggleSystemTray($event); });
++                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange");
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "label", 11);
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "h3", 12);
+-                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Enable System Tray Icon");
++                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Enable System Tray Icon | Warning: This is buggy due to an Electron bug, please follow electron/electron#17000. This switch has been disabled until a workaround or a fix is found. You can manually change this in the settings.json file.");
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "div", 9);
+@@ -37581,124 +37592,19 @@
+     }
+ }
+ function SimulatorComponent_div_10_Template(rf, ctx) {
+-    if (rf & 1) {
+-        var _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 9);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 16);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Flight Simulator X / FSX:SE ");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 29);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_10_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14); var ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r13.paths.fsx = $event; })("ngModelChange", function SimulatorComponent_div_10_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14); var ctx_r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r15.updatePaths(); })("keydown", function SimulatorComponent_div_10_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14); var ctx_r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r16.updatePaths(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_10_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14); var ctx_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r17.browseFsx(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-    }
+-    if (rf & 2) {
+-        var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r1.paths.fsx);
+-    }
++    return;
+ }
+ function SimulatorComponent_div_11_Template(rf, ctx) {
+-    if (rf & 1) {
+-        var _r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 9);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 30);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v1-v3 ");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 31);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_11_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r19); var ctx_r18 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r18.paths.p3d = $event; })("ngModelChange", function SimulatorComponent_div_11_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r19); var ctx_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r20.updatePaths(); })("keydown", function SimulatorComponent_div_11_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r19); var ctx_r21 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r21.updatePaths(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_11_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r19); var ctx_r22 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r22.browseP3d(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-    }
+-    if (rf & 2) {
+-        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r2.paths.p3d);
+-    }
++    return;
+ }
+ function SimulatorComponent_div_12_Template(rf, ctx) {
+-    if (rf & 1) {
+-        var _r24 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 9);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 32);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v4 ");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 33);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_12_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24); var ctx_r23 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r23.paths.p3dv4 = $event; })("ngModelChange", function SimulatorComponent_div_12_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24); var ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r25.updatePaths(); })("keydown", function SimulatorComponent_div_12_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24); var ctx_r26 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r26.updatePaths(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_12_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24); var ctx_r27 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r27.browseP3d4(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-    }
+-    if (rf & 2) {
+-        var ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r3.paths.p3dv4);
+-    }
++    return;
+ }
+ function SimulatorComponent_div_13_Template(rf, ctx) {
+-    if (rf & 1) {
+-        var _r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 9);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 32);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v5 ");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 34);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_13_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r29); var ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r28.paths.p3dv5 = $event; })("ngModelChange", function SimulatorComponent_div_13_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r29); var ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r30.updatePaths(); })("keydown", function SimulatorComponent_div_13_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r29); var ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r31.updatePaths(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_13_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r29); var ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r32.browseP3d5(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-    }
+-    if (rf & 2) {
+-        var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r4.paths.p3dv5);
+-    }
++    return;
+ }
+ function SimulatorComponent_div_21_Template(rf, ctx) {
+-    if (rf & 1) {
+-        var _r34 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 35);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 36);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Microsoft Flight Simulator ");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 37);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_21_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); var ctx_r33 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r33.paths.msfs = $event; })("ngModelChange", function SimulatorComponent_div_21_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); var ctx_r35 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r35.updatePaths(); })("keydown", function SimulatorComponent_div_21_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); var ctx_r36 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r36.updatePaths(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_21_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); var ctx_r37 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r37.browseMsfs(); });
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+-    }
+-    if (rf & 2) {
+-        var ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r5.paths.msfs);
+-    }
++    return;
+ }
+ function SimulatorComponent_ng_container_46_Template(rf, ctx) {
+     if (rf & 1) {
+@@ -37953,7 +37859,7 @@
+             }
+             if (this.paths.xplane !== null && this.paths.xplane !== '') {
+                 this.bridgeOptions.push({
+-                    label: '[X-Plane] projectFLY X-Plane Plugin',
++                    label: '[X-Plane] openPFLY X-Plane Plugin',
+                     value: 'xplane'
+                 });
+             }
+@@ -37966,7 +37872,7 @@
+         }
+         else {
+             this.bridgeOptions.push({
+-                label: '[X-Plane] projectFLY X-Plane Plugin',
++                label: '[X-Plane] openPFLY X-Plane Plugin',
+                 value: 'xplane'
+             });
+         }
+@@ -38143,7 +38049,7 @@
+         this.xplError = null;
+         var fs = this.electronService.fs;
+         var path = this.electronService.remote.app;
+-        var xpl = this.electronService.path.join(this.paths.xplane, 'resources', 'plugins');
++        var xpl = this.electronService.path.join(this.paths.xplane, 'Resources', 'plugins');
+         if (!fs.existsSync(this.paths.xplane)) {
+             this.xplError = 'The X-Plane directory set does not exist, or is inaccessible.';
+             return;
+@@ -38153,15 +38059,30 @@
+             return;
+         }
+         this.xplCopying = true;
+-        var subPath = '../exec/xpl/projectFLY';
++        var subPath = '';
++        if (process.platform === 'linux') {
++            subPath = '../exec/xpl/openPFly';
++        } else {
++            subPath = '../exec/xpl/projectFLY';
++        }
+         var isFocusBuild = this.electronService.isFocusBuild();
+         if (isFocusBuild)
+             subPath = '../exec/xpl/projectFLY Focus';
+         var installPath = this.electronService.path.join(path.getAppPath(), subPath);
+-        var destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        var destPath = '';
++        if (process.platform === 'linux') {
++            destPath = this.electronService.path.join(xpl, 'openPFly');
++        } else {
++            destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
++        }
+         var source = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])() ? './src/resources/' + subPath : installPath;
+         var fsE = this.electronService.fsExtra;
+-        var dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        var dir = '';
++        if (process.platform === 'linux') {
++            dir = xpl + '/openPFly'
++        } else {
++            dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
++        }
+         if (fs.existsSync(dir))
+             fsE.removeSync(dir);
+         fsE.copy(source, dir, function (err) {
+@@ -38181,10 +38102,11 @@
+         var fs = this.electronService.fs;
+         var isFocusBuild = this.electronService.isFocusBuild();
+         var version = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++            version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/openPFly/version.json');
++        } else if (isFocusBuild) {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY Focus/version.json');
+-        }
+-        else {
++        } else {
+             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY/version.json');
+         }
+         if (!fs.existsSync(version)) {
+@@ -38194,7 +38116,11 @@
+         var data = fs.readFileSync(version, 'utf8');
+         var path = this.electronService.remote.app;
+         var localVersion = null;
+-        if (isFocusBuild) {
++        if (process.platform === 'linux') {
++            localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
++            ? '../resources/exec/xpl/openPFly/version.json'
++            : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/openPFly/version.json');       
++        } else if (isFocusBuild) {
+             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
+                 ? '../resources/exec/xpl/projectFLY Focus/version.json'
+                 : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/projectFLY Focus/version.json');
+
+@@ -75597,8 +75515,7 @@
+         this.ipc.config.silent = true;
+         var bridgeTypes = ['simconnect', 'fsuipc', 'if', 'xplane'];
+         // serve the ipc server
+-        this.ipc.serve(navigator.userAgent.includes('Windows NT') ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {
+-            _this.ipc.server.on('error', function (err) {
++        this.ipc.serve(navigator.userAgent.includes('Windows NT' || 'Unix') ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {            _this.ipc.server.on('error', function (err) {
+                 alert(err);
+             });
+             _this.ipc.server.on('data', function (buffer) {
+@@ -75643,7 +75560,8 @@
+         }
+         else {
+             this.log('Platform is Unix');
+-            this.log('No bridge currently available.');
++            this.log('Using openPFLY');
++            this.startBridge();
+         }
+     };
+     FlightSimService.prototype.pad = function (number) {
+--- ./main.js	2021-01-02 23:31:17.036332902 -0500
++++ ./main.js	2021-01-02 23:36:23.641008000 -0500
 @@ -57,8 +57,8 @@
  var hardwareAccel;
  var args = process.argv.slice(1);
@@ -34,8 +319,8 @@
          }));
      }
 -    checkForUpdates();
-+    if (os.platform() != 'Linux') {
-+      checkForUpdates();
++    if (os.platform() != 'Linux') { 
++        checkForUpdates();
 +    }
      loadingScreen.on('closed', function () { return (loadingScreen = null); });
      electron_1.ipcMain.on('quit-and-install-update', function (event, arg) {
@@ -58,307 +343,24 @@
      });
      // Check for updates every 15 mins
      setInterval(function () {
-+      if (os.platform() != 'Linux') {
-         checkForUpdates();
-+      }
+-        checkForUpdates();
++        if (os.platform() != 'Linux') {
++            checkForUpdates();
++        }
      }, 900000);
      // win.webContents.openDevTools();
      // Emitted when the window is closed.
-@@ -257,7 +261,15 @@
+@@ -257,7 +261,12 @@
      sendUpdateNotification('updateDownloaded');
      sendUpdateNotification(info);
  });
 -var settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
-+
 +var settingsUrl = '';
-+
 +if (process.platform === 'linux') {
 +    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
 +} else {
 +    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
 +}
-+
  try {
      if (fs.existsSync(settingsUrl)) {
          var settingsFileRaw = fs.readFileSync(settingsUrl);
-
---- /home/skye/Downloads/electron/resources/app 4.0.2/main.155cde2f53915eb1a390.js
-+++ /home/skye/Downloads/electron/resources/app/main.155cde2f53915eb1a390.js
-@@ -34507,7 +34507,14 @@
-         this.autostart = this.storage.get('autostart', true);
-         this.enableTrayIcon = this.storage.get('enableTrayIcon', true);
-         this.exportAddons = Object.keys(this.exportService.exportTypes);
--        var settingsFileRaw = fs.readFileSync(process.env.APPDATA + '/projectfly/settings.json');
-+        var settingsUrl = '';
-+	if (process.platform === 'linux') {
-+	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
-+	} else {
-+	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
-+	}
-+        var settingsFileRaw = fs.readFileSync(settingsUrl);
-+
-         var settingsFile = JSON.parse(settingsFileRaw);
-         this.enableHardwareAccel = settingsFile.hardwareAccel;
-         if (this.settingsService.emails) {
-@@ -34583,8 +34590,7 @@
-         this.storage.set('enableTrayIcon', this.enableTrayIcon);
-         if (this.enableTrayIcon) {
-             this.trayService.create();
--        }
--        else {
-+        } else {
-             this.trayService.destroy();
-         }
-     };
-@@ -34789,7 +34795,13 @@
-     };
-     ApplicationComponent.prototype.toggleHardwareAccel = function (event) {
-         var _this = this;
--        var settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
-+        var settingsUrl = '';
-+	if (process.platform === 'linux') {
-+	    settingsUrl = require('os').homedir() + '/.config/projectfly/settings.json';
-+	} else {
-+	    settingsUrl = process.env.APPDATA + '/projectfly/settings.json';
-+	}
-+
-         var settingsFileRaw = fs.readFileSync(settingsUrl);
-         var settings = JSON.parse(settingsFileRaw);
-         settings.hardwareAccel = event;
-@@ -34840,11 +34852,11 @@
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "div", 9);
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "input", 10);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ApplicationComponent_Template_input_ngModelChange_13_listener($event) { return ctx.enableTrayIcon = $event; })("ngModelChange", function ApplicationComponent_Template_input_ngModelChange_13_listener($event) { return ctx.toggleSystemTray($event); });
-+                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange");
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "label", 11);
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "h3", 12);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Enable System Tray Icon");
-+                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Enable System Tray Icon | Warning: This is buggy due to an Electron bug, please follow electron/electron#17000. This switch has been disabled until a workaround or a fix is found. You can manually change this in the settings.json file.");
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "div", 9);
-@@ -37580,100 +37592,16 @@
-     }
- }
- function SimulatorComponent_div_10_Template(rf, ctx) {
--    if (rf & 1) {
--        var _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 28);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 15);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Flight Simulator X / FSX:SE ");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 29);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_10_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13); var ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r12.paths.fsx = $event; })("ngModelChange", function SimulatorComponent_div_10_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13); var ctx_r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r14.updatePaths(); })("keydown", function SimulatorComponent_div_10_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13); var ctx_r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r15.updatePaths(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_10_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13); var ctx_r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r16.browseFsx(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--    }
--    if (rf & 2) {
--        var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r1.paths.fsx);
--    }
-+   return;
- }
- function SimulatorComponent_div_11_Template(rf, ctx) {
--    if (rf & 1) {
--        var _r18 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 28);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 30);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v1-v3 ");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 31);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_11_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r18); var ctx_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r17.paths.p3d = $event; })("ngModelChange", function SimulatorComponent_div_11_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r18); var ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r19.updatePaths(); })("keydown", function SimulatorComponent_div_11_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r18); var ctx_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r20.updatePaths(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_11_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r18); var ctx_r21 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r21.browseP3d(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--    }
--    if (rf & 2) {
--        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r2.paths.p3d);
--    }
-+   return;
- }
- function SimulatorComponent_div_12_Template(rf, ctx) {
--    if (rf & 1) {
--        var _r23 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 28);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 32);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v4 ");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 33);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_12_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r23); var ctx_r22 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r22.paths.p3dv4 = $event; })("ngModelChange", function SimulatorComponent_div_12_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r23); var ctx_r24 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r24.updatePaths(); })("keydown", function SimulatorComponent_div_12_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r23); var ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r25.updatePaths(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_12_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r23); var ctx_r26 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r26.browseP3d4(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--    }
--    if (rf & 2) {
--        var ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r3.paths.p3dv4);
--    }
-+   return;
- }
- function SimulatorComponent_div_13_Template(rf, ctx) {
--    if (rf & 1) {
--        var _r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 28);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "label", 32);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Prepar3D v5 ");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 34);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SimulatorComponent_div_13_Template_input_ngModelChange_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r28); var ctx_r27 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r27.paths.p3dv5 = $event; })("ngModelChange", function SimulatorComponent_div_13_Template_input_ngModelChange_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r28); var ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r29.updatePaths(); })("keydown", function SimulatorComponent_div_13_Template_input_keydown_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r28); var ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r30.updatePaths(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 13);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SimulatorComponent_div_13_Template_button_click_5_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r28); var ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r31.browseP3d5(); });
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Browse");
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--    }
--    if (rf & 2) {
--        var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
--        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r4.paths.p3dv5);
--    }
-+   return;
- }
- function SimulatorComponent_ng_container_45_Template(rf, ctx) {
-     if (rf & 1) {
-@@ -37933,7 +37861,7 @@
-         }
-         else {
-             this.bridgeOptions.push({
--                label: '[X-Plane] projectFLY X-Plane Plugin',
-+                label: '[X-Plane] openPFly X-Plane Plugin',
-                 value: 'xplane'
-             });
-         }
-@@ -38085,7 +38013,7 @@
-         this.xplError = null;
-         var fs = this.electronService.fs;
-         var path = this.electronService.remote.app;
--        var xpl = this.electronService.path.join(this.paths.xplane, 'resources', 'plugins');
-+        var xpl = this.electronService.path.join(this.paths.xplane, 'Resources', 'plugins');
-         if (!fs.existsSync(this.paths.xplane)) {
-             this.xplError = 'The X-Plane directory set does not exist, or is inaccessible.';
-             return;
-@@ -38095,15 +38023,33 @@
-             return;
-         }
-         this.xplCopying = true;
--        var subPath = '../exec/xpl/projectFLY';
-+        var subPath = '';
-+        if (process.platform === 'linux') {
-+            subPath = '../exec/xpl/openPFly';
-+        } else {
-+            subPath = '../exec/xpl/projectFLY';
-+        }
-+
-         var isFocusBuild = this.electronService.isFocusBuild();
-         if (isFocusBuild)
-             subPath = '../exec/xpl/projectFLY Focus';
-         var installPath = this.electronService.path.join(path.getAppPath(), subPath);
--        var destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
-+        var destPath = '';
-+        if (process.platform === 'linux') {
-+            destPath = this.electronService.path.join(xpl, 'openPFly');
-+        } else {
-+            destPath = this.electronService.path.join(xpl, isFocusBuild ? 'projectFLY Focus' : 'projectFLY');
-+        }
-+        
-         var source = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])() ? './src/resources/' + subPath : installPath;
-         var fsE = this.electronService.fsExtra;
--        var dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
-+        var dir = '';
-+        if (process.platform === 'linux') {
-+            dir = xpl + '/openPFly'
-+        } else {
-+            dir = isFocusBuild ? xpl + '\\projectFLY Focus' : xpl + '\\projectFLY';
-+        }
-+
-         if (fs.existsSync(dir))
-             fsE.removeSync(dir);
-         fsE.copy(source, dir, function (err) {
-@@ -38123,10 +38069,11 @@
-         var fs = this.electronService.fs;
-         var isFocusBuild = this.electronService.isFocusBuild();
-         var version = null;
--        if (isFocusBuild) {
-+        if (process.platform === 'linux') {
-+            version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/openPFly/version.json');
-+        } else if (isFocusBuild) {
-             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY Focus/version.json');
--        }
--        else {
-+        } else {
-             version = this.electronService.path.join(this.paths.xplane + '/resources/plugins/projectFLY/version.json');
-         }
-         if (!fs.existsSync(version)) {
-@@ -38136,7 +38083,12 @@
-         var data = fs.readFileSync(version, 'utf8');
-         var path = this.electronService.remote.app;
-         var localVersion = null;
--        if (isFocusBuild) {
-+        if (process.platform === 'linux') {
-+             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
-+                ? '../resources/exec/xpl/openPFly/version.json'
-+                : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/openPFly/version.json');       
-+        } else if (isFocusBuild) {
-+
-             localVersion = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()
-                 ? '../resources/exec/xpl/projectFLY Focus/version.json'
-                 : this.electronService.path.join(path.getAppPath() + '../resources/exec/xpl/projectFLY Focus/version.json');
-@@ -51554,14 +51506,6 @@
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceHTML"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](103, "span", 31);
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](104, "Support");
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](105, "li", 27);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](106, "a", 62);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](107, "i", 63);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](108, "span", 31);
--                _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](109, "Tools");
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-                 _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-@@ -75473,7 +75417,7 @@
-         this.ipc.config.silent = true;
-         var bridgeTypes = ['simconnect', 'fsuipc', 'if', 'xplane'];
-         // serve the ipc server
--        this.ipc.serve(navigator.userAgent.includes('Windows NT') ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {
-+        this.ipc.serve(navigator.userAgent.includes('Windows NT' || 'Unix') ? app_util_constants__WEBPACK_IMPORTED_MODULE_1__["ApiSettings"].IPC_PIPE_NAME : '/tmp/pf.sock', function () {
-             _this.ipc.server.on('error', function (err) {
-                 alert(err);
-             });
-@@ -75519,7 +75463,8 @@
-         }
-         else {
-             this.log('Platform is Unix');
--            this.log('No bridge currently available.');
-+            this.log('Using openPFly.');
-+            this.startBridge();
-         }
-     };
-     FlightSimService.prototype.pad = function (number) {
