@@ -24,9 +24,10 @@ echo "----"
 echo "Downloading patch"
 wget https://gitlab.com/pretzelca/projectfly-for-linux/-/raw/master/pflylinux.patch
 echo "Applying patch"
-echo "If the patching process requires you to enter input, just enter Y for both of them"
+dos2unix ./resources/app/main.js
+dos2unix ./pflylinux.patch
 cd ./resources/app
-patch < ../../pflylinux.patch
+patch -p1 < ../../pflylinux.patch
 cd ../../
 
 echo "----"
